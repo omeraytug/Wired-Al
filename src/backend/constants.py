@@ -1,9 +1,9 @@
 from pathlib import Path
 
-BASE_PATH = Path(__file__).parents[2].resolve()
+BASE_PATH = Path(__file__).parents[1].resolve()
 
-KNOWLEDGE_BASE_PATH = BASE_PATH / "rag" / "knowledge_base"
-VECTOR_DB_PATH = BASE_PATH / "rag" / "vector_db"
+DATA_PATH = BASE_PATH / "rag" / "data"
+VECTOR_DB_PATH = BASE_PATH / "rag" / "knowledge_base"
 
 TABLE_NAME = "articles"
 
