@@ -1,16 +1,13 @@
 [project]
 name = "brain-404"
 version = "0.1.0"
-description = "Add your description here"
+description = "Wired Al LLMOps project"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = [
-    "fastapi>=0.136.0",
-    "ipykernel>=7.2.0",
-    "lancedb==0.17",
-    "mlflow>=3.11.1",
-    "pandas<3",
-    "pydantic-ai>=1.86.0",
-    "streamlit>=1.56.0",
-    "uvicorn>=0.45.0",
-]
+dependencies = []
+
+[tool.uv.workspace]
+members = ["backend", "frontend"]
+
+[dependency-groups]
+dev = ["ipykernel>=7.2.0", "pytest", "ruff"]
