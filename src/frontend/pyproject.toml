@@ -1,13 +1,8 @@
 [project]
 name = "frontend"
 version = "0.1.0"
-description = "Streamlit frontend for Wired Al"
 requires-python = ">=3.13"
-dependencies = ["streamlit>=1.56.0", "requests>=2.32.0"]
+dependencies = ["streamlit>=1.56.0"]
 
 [tool.uv]
-package = true
-
-[build-system]
-requires = ["uv_build>=0.9.5,<0.10.0"]
-build-backend = "uv_build"
+package = false
