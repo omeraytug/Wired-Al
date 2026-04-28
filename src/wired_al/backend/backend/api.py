@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.agent.model import chat
+from backend.model import chat
 from backend.schemas import ChatResponse, ChatRequest
 
 app = FastAPI()
@@ -11,7 +11,7 @@ async def health():
 
 
 @app.post("/ask")
-async def ask(query: ChatRequest)-> ChatResponse:
+async def ask(query: ChatRequest) -> ChatResponse:
     result = await chat(query.prompt)
 
     return result

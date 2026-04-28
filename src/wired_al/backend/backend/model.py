@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from pydantic_ai import Agent
 
-from backend.agent.prompts import SYSTEM_PROMPT
+from backend.prompts import SYSTEM_PROMPT
 from backend.constants import MODEL_MEDIUM
 from backend.schemas import ChatResponse
 

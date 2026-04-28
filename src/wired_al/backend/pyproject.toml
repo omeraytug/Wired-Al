@@ -10,6 +10,3 @@ dependencies = [
     "mlflow>=3.11.1",
     "pandas<3",
 ]
-
-[tool.uv]
-package = false

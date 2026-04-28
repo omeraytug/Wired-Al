@@ -1,6 +1,6 @@
 import lancedb
 from backend.constants import VECTOR_DB_PATH, DATA_PATH
-from rag.data_models import Article
+from data_models import Article
 from dotenv import load_dotenv
 
 load_dotenv()
