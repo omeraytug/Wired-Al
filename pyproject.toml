@@ -1,17 +1,15 @@
 [project]
-name = "wired-al"
+name = "wired_al"
 version = "0.1.0"
-description = "Wired Al LLMOps project"
+description = "Wired AI LLMOps project"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = ["ipykernel>=7.2.0"]
+dependencies = ["ipykernel>=7.2.0", "frontend", "backend", "rag"]
+
+[tool.uv.sources]
+backend = { workspace = true }
+frontend = { workspace = true }
+rag = { workspace = true }
 
 [tool.uv.workspace]
-members = ["src/frontend", "src/backend"]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.uv]
-package = false
+members = ["packages/backend", "packages/frontend", "packages/rag"]
