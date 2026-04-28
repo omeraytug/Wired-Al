@@ -207,4 +207,6 @@ marimo/_lsp/
 __marimo__/
 
 .DS_Store
-.vscode
+
+
+/src/rag/knowledge_base/articles.lance
