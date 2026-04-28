@@ -12,4 +12,4 @@ frontend = { workspace = true }
 rag = { workspace = true }
 
 [tool.uv.workspace]
-members = ["src/wired_al/backend", "src/wired_al/frontend", "src/wired_al/rag"]
+members = ["packages/backend", "packages/frontend", "packages/rag"]

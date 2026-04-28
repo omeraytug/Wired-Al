@@ -12,7 +12,7 @@ async def health():
 
 @app.post("/ask")
 async def ask(query: ChatRequest) -> ChatResponse:
-    result = await chat(query.prompt)
+    result = await chat(query.question)
 
     return result
 

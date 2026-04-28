@@ -254,13 +254,14 @@ wheels = [
 [[package]]
 name = "backend"
 version = "0.1.0"
-source = { editable = "src/wired_al/backend" }
+source = { editable = "packages/backend" }
 dependencies = [
     { name = "fastapi" },
     { name = "lancedb" },
     { name = "mlflow" },
     { name = "pandas" },
     { name = "pydantic-ai" },
+    { name = "rag" },
     { name = "uvicorn" },
 ]
 
@@ -271,6 +272,7 @@ requires-dist = [
     { name = "mlflow", specifier = ">=3.11.1" },
     { name = "pandas", specifier = "<3" },
     { name = "pydantic-ai", specifier = ">=1.86.0" },
+    { name = "rag", editable = "packages/rag" },
     { name = "uvicorn", specifier = ">=0.45.0" },
 ]
 
@@ -944,7 +946,7 @@ wheels = [
 [[package]]
 name = "frontend"
 version = "0.1.0"
-source = { editable = "src/wired_al/frontend" }
+source = { editable = "packages/frontend" }
 dependencies = [
     { name = "httpx" },
     { name = "streamlit" },
@@ -3277,14 +3279,16 @@ wheels = [
 [[package]]
 name = "rag"
 version = "0.1.0"
-source = { editable = "src/wired_al/rag" }
+source = { editable = "packages/rag" }
 dependencies = [
+    { name = "backend" },
     { name = "lancedb" },
     { name = "pandas" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "backend", editable = "packages/backend" },
     { name = "lancedb", specifier = "==0.17" },
     { name = "pandas", specifier = "<3" },
 ]
@@ -4165,10 +4169,10 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "backend", editable = "src/wired_al/backend" },
-    { name = "frontend", editable = "src/wired_al/frontend" },
+    { name = "backend", editable = "packages/backend" },
+    { name = "frontend", editable = "packages/frontend" },
     { name = "ipykernel", specifier = ">=7.2.0" },
-    { name = "rag", editable = "src/wired_al/rag" },
+    { name = "rag", editable = "packages/rag" },
 ]
 
 [[package]]
