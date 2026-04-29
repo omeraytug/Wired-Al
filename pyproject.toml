@@ -4,12 +4,18 @@ version = "0.1.0"
 description = "Wired AI LLMOps project"
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = ["ipykernel>=7.2.0", "frontend", "backend", "rag"]
+dependencies = ["ipykernel>=7.2.0", "frontend", "backend", "rag", "evaluation"]
 
 [tool.uv.sources]
 backend = { workspace = true }
 frontend = { workspace = true }
 rag = { workspace = true }
+evaluation = { workspace = true }
 
 [tool.uv.workspace]
-members = ["packages/backend", "packages/frontend", "packages/rag"]
+members = [
+    "packages/backend",
+    "packages/frontend",
+    "packages/rag",
+    "packages/evaluation",
+]
