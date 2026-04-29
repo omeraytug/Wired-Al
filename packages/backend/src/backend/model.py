@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 from pydantic_ai import Agent
 
-from backend.prompts import SYSTEM_PROMPT
+from backend.prompts import SYSTEM_PROMPT, RAG_PROMPT_TEMPLATE
 from backend.constants import MODEL_MEDIUM
-from backend.schemas import ChatResponse
+from backend.schemas import ChatResponse, SourceDocument
 
 from rag.retrieval import retrieve_documents
 
@@ -15,8 +15,28 @@ wired_al_agent = Agent(
 
 
 async def chat(question: str) -> ChatResponse:
-    result = await wired_al_agent.run(question)
-    return result.output
+    documents = retrieve_documents(question)
+
+    context = "\n\n".join(
+        f"Document: {doc['document_name']}\nContent:\n{doc['content']}"
+        for doc in documents
+    )
+
+    prompt = RAG_PROMPT_TEMPLATE.format(question=question, context=context)
+
+    result = await wired_al_agent.run(prompt)
+
+    return ChatResponse(
+        answer=result.output.answer,
+        sources=[
+            SourceDocument(
+                document_name=doc["document_name"],
+                file_path=doc["file_path"],
+                content_preview=(doc.get("content") or "")[:200],
+            )
+            for doc in documents
+        ],
+    )
 
 
 @wired_al_agent.tool_plain

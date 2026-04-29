@@ -1,11 +1,11 @@
 import lancedb
-from backend.constants import VECTOR_DB_PATH
+from backend.constants import VECTOR_DB_PATH, TABLE_NAME
 
 db = lancedb.connect(VECTOR_DB_PATH)
 
 
 def retrieve_documents(query: str, k: int = 3):
-    results = db["articles"].search(query).limit(k).to_list()
+    results = db[TABLE_NAME].search(query).limit(k).to_list()
     return [
         {
             "document_name": result["document_name"],
