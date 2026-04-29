@@ -208,5 +208,5 @@ __marimo__/
 
 .DS_Store
 
-
-/src/rag/knowledge_base/articles.lance
+packages/rag/knowledge_base/*
+!packages/rag/knowledge_base/.gitkeep
