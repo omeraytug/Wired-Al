@@ -1,0 +1,25 @@
+services:
+  backend:
+    container_name: backend
+    build:
+      # . means we are in same folder as docker-compose.yaml file i.e. rag folder
+      context: .
+      dockerfile: dockerfiles/backend.dockerfile
+    env_file:
+      - .env
+    image: backend:v1
+    ports:
+      - "8000:8000"
+
+  frontend:
+    container_name: frontend
+    build:
+      context: .
+      dockerfile: dockerfiles/frontend.dockerfile
+    image: frontend:v1
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+    environment:
+      - API_URL=http://backend:8000
