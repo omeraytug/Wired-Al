@@ -5,10 +5,23 @@ import os
 API_URL = os.getenv("API_URL","http://localhost:8000")
 
 def layout():
-    st.set_page_config(page_title="404 Brain Not found", page_icon="🧠")
+    st.set_page_config(page_title="WIRED-AL", page_icon="🧠")
     
-    st.markdown("# 404 brain not found ")
-    st.markdown("Ask me about onboarding")
+    with st.sidebar:
+        st.markdown("WIRED-AL")
+        st.markdown("### 404 Brain Not Found")
+        st.markdown("AI onboarding copilot")
+
+        st.divider()
+        st.markdown("### Try asking")
+        
+    
+        st.markdown("🧑‍💻 **How do we do code reviews?**")
+        st.markdown("⚠️ **What are common rookie mistakes?**")
+        st.markdown("🟡 **When should I ask for help?**")
+        st.markdown("💬 **How should I communicate with the team?**")
+    
+    st.markdown("# WIRED-AL")
     
     if "messages" not in st.session_state:
         st.session_state.messages = [
@@ -18,43 +31,8 @@ def layout():
             }
         ]
     
-    st.markdown(
-    """
-    <div style="
-        background-color: #f5f5f7;
-        padding: 1.2rem;
-        border-radius: 12px;
-        border: 1px solid #e5e7eb;
-        margin-top: 1rem;
-        margin-bottom: 2rem;
-    ">
-        <h4 style="margin-bottom: 0.5rem;">Your AI onboarding copilot</h4>
-        <p style="margin-bottom: 0;">
-            Ask questions about team practices, code reviews, communication norms,
-            rookie mistakes, and when to ask for help.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-    
-    st.markdown("### Try Asking:")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("🧑‍💻 **How do we do code reviews?**")
-        st.markdown("⚠️ **What are common rookie mistakes?**")
-
-    with col2:
-        st.markdown("🟡 **When should I ask for help?**")
-        st.markdown("💬 **How should I communicate with the team?**")
-        
     st.divider()
-    st.markdown("### Chat")
-    
         
-    
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
@@ -91,12 +69,18 @@ def layout():
                              document_name = source.get("document_name", "Unknown document")
                              content_preview = source.get("content_preview", "")
                              
-                             clean_preview = content_preview.replace("#", "").replace("\n", " ")
+                             clean_preview = (
+                                content_preview
+                                .replace("#", "")
+                                .replace("\n", " ")
+                                .replace(document_name, "")
+                                .strip()
+                            )
                              
                              st.markdown(f"**{document_name}**")
                              
                              if clean_preview:
-                                 st.markdown(clean_preview[:300] + "...")
+                                 st.markdown(clean_preview[:180] + "...")
                                  
                                  st.divider()
                         
