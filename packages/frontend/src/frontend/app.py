@@ -31,7 +31,7 @@ def layout():
             }
         ]
     
-        st.divider()
+    st.divider()
         
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
@@ -69,12 +69,18 @@ def layout():
                              document_name = source.get("document_name", "Unknown document")
                              content_preview = source.get("content_preview", "")
                              
-                             clean_preview = content_preview.replace("#", "").replace("\n", " ")
+                             clean_preview = (
+                                content_preview
+                                .replace("#", "")
+                                .replace("\n", " ")
+                                .replace(document_name, "")
+                                .strip()
+                            )
                              
                              st.markdown(f"**{document_name}**")
                              
                              if clean_preview:
-                                 st.markdown(clean_preview[:300] + "...")
+                                 st.markdown(clean_preview[:180] + "...")
                                  
                                  st.divider()
                         
