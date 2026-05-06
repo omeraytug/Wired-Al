@@ -23,3 +23,27 @@ services:
       - backend
     environment:
       - API_URL=http://backend:8000
+
+  mlflow:
+    container_name: mlflow
+    image: ghcr.io/mlflow/mlflow:latest
+    ports:
+      - "5001:5000"
+    volumes:
+      - mlflow_data:/mlflow # maps named volume mlflow_data into /mlflow folder
+    command:
+      [
+        "mlflow",
+        "server",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "5000",
+        "--backend-store-uri",
+        "sqlite:////mlflow/mlflow.db",
+        "--allowed-hosts",
+        "*",
+      ]
+
+volumes:
+  mlflow_data:
