@@ -1,16 +1,20 @@
+import mlflow
 from dotenv import load_dotenv
 from pydantic_ai import Agent
 
-from backend.prompts import SYSTEM_PROMPT, RAG_PROMPT_TEMPLATE
-from backend.constants import MODEL_MEDIUM
+from backend.constants import MODEL_MEDIUM, MLFLOW_DB_PATH
 from backend.schemas import ChatResponse, SourceDocument
 
 from rag.retrieval import retrieve_documents
 
 load_dotenv()
+mlflow.set_tracking_uri(MLFLOW_DB_PATH)
+
+systemprompt = mlflow.genai.load_prompt("prompt:/system_prompt/1")
+rag_prompt = mlflow.genai.load_prompt("prompt:/rag_prompt/1")
 
 wired_al_agent = Agent(
-    model=MODEL_MEDIUM, system_prompt=SYSTEM_PROMPT, output_type=ChatResponse
+    model=MODEL_MEDIUM, system_prompt=systemprompt, output_type=ChatResponse
 )
 
 
@@ -22,7 +26,7 @@ async def chat(question: str) -> ChatResponse:
         for doc in documents
     )
 
-    prompt = RAG_PROMPT_TEMPLATE.format(question=question, context=context)
+    prompt = rag_prompt.format(question=question, context=context)
 
     result = await wired_al_agent.run(prompt)
 

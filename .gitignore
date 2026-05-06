@@ -210,3 +210,6 @@ __marimo__/
 
 packages/rag/knowledge_base/*
 !packages/rag/knowledge_base/.gitkeep
+
+# MLflow
+*mlflow.db
