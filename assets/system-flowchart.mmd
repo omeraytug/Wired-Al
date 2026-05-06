@@ -1,7 +1,7 @@
 %%{init: {"flowchart": {"nodeSpacing": 50, "rankSpacing": 70}} }%%
 flowchart TD
   U["User"] -->|Types question| ST["Streamlit UI<br/>packages/frontend/src/frontend/app.py"]
-  ST -->|POST /ask (question)| API["FastAPI backend<br/>packages/backend/src/backend/api.py"]
+  ST -->|POST ask (question)| API["FastAPI backend<br/>packages/backend/src/backend/api.py"]
 
   API --> CHAT["chat(question)<br/>packages/backend/src/backend/model.py"]
 
