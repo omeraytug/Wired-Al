@@ -3,14 +3,14 @@
 ```mermaid
 %%{init: {"flowchart": {"nodeSpacing": 50, "rankSpacing": 70}} }%%
 flowchart TD
-  U["User"] -->|Types question| ST["Streamlit UI<br/>packages/frontend/src/frontend/app.py"]
-  ST -->|POST_ask_question| API["FastAPI backend<br/>packages/backend/src/backend/api.py"]
+  U["User"] --> ST["Streamlit UI<br/>packages/frontend/src/frontend/app.py"]
+  ST --> API["FastAPI backend<br/>packages/backend/src/backend/api.py"]
 
   API --> CHAT["chat(question)<br/>packages/backend/src/backend/model.py"]
 
   CHAT --> RETRIEVE["retrieve_documents(question, k=3)<br/>packages/rag/src/rag/retrieval.py"]
   RETRIEVE --> LDB["LanceDB Vector DB<br/>path: VECTOR_DB_PATH"]
-  LDB -->|table.search(question)<br/>vector similarity| TOPK["Top-k matches<br/>table: articles"]
+  LDB --> TOPK["Top-k matches<br/>table: articles"]
 
   TOPK --> CONTEXT["Build context string<br/>Doc name + content"]
   CONTEXT --> PROMPT["Fill RAG_PROMPT_TEMPLATE<br/>packages/backend/src/backend/prompts.py"]
@@ -18,8 +18,8 @@ flowchart TD
 
   AGENT --> RESP["Build ChatResponse<br/>answer + source previews"]
   RESP --> API
-  API -->|JSON| ST
-  ST -->|Render answer + sources| U
+  API --> ST
+  ST --> U
 
   %% Ingestion path (not invoked by /ask)
   subgraph OFFLINE["Offline setup (knowledge base creation)"]
@@ -31,7 +31,7 @@ flowchart TD
   %% Embedding happens via LanceDB schema
   subgraph EMBED["Embeddings (implicit)"]
     SCHEMA["Article schema<br/>packages/rag/src/rag/data_models.py<br/>content = SourceField()<br/>embedding = VectorField()"]
-    SCHEMA -->|Cohere model EMBEDDING_MODEL| LDB
+    SCHEMA --> LDB
   end
 ```
 
