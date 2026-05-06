@@ -1,4 +1,5 @@
 import mlflow
+from mlflow.genai import load_prompt
 from dotenv import load_dotenv
 from pydantic_ai import Agent
 
@@ -10,11 +11,11 @@ from rag.retrieval import retrieve_documents
 load_dotenv()
 mlflow.set_tracking_uri(MLFLOW_DB_PATH)
 
-systemprompt = mlflow.genai.load_prompt("prompt:/system_prompt/1")
-rag_prompt = mlflow.genai.load_prompt("prompt:/rag_prompt/1")
+system_prompt = load_prompt("prompts:/system_prompt/1").template
+rag_prompt = load_prompt("prompts:/rag_prompt/1").template
 
 wired_al_agent = Agent(
-    model=MODEL_MEDIUM, system_prompt=systemprompt, output_type=ChatResponse
+    model=MODEL_MEDIUM, system_prompt=system_prompt, output_type=ChatResponse
 )
 
 
