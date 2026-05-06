@@ -30,7 +30,7 @@ services:
     ports:
       - "5001:5000"
     volumes:
-      - mlflow_data:/mlflow # maps named volume mlflow_data into /mlflow folder
+      - ./mlflow:/mlflow # persist DB/artifacts under repo ./mlflow
     command:
       [
         "mlflow",
@@ -45,5 +45,4 @@ services:
         "*",
       ]
 
-volumes:
-  mlflow_data:
+volumes: {}
