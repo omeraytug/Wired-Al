@@ -19,6 +19,6 @@ COPY packages/rag/knowledge_base packages/rag/knowledge_base
 # Sync only backend project (and its workspace deps like rag)
 RUN uv sync --frozen --no-dev --package backend
 
-WORKDIR /app/packages/backend/src/backend
+WORKDIR /app/packages/backend/src/backend/
 # --no-sync: use the venv from the image; avoid network/registry on every container start
 CMD ["uv", "run", "--no-sync", "--package", "backend", "uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
