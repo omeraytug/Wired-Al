@@ -10,6 +10,8 @@ services:
     image: backend:v1
     ports:
       - "8000:8000"
+    environment:
+    - MLFLOW_TRACKING_URI=http://mlflow:5000
 
   frontend:
     container_name: frontend
