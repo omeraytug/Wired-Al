@@ -3,18 +3,18 @@ import httpx
 import os
 from pathlib import Path
 
-ROOT_PATH = Path(__file__).parents[4].resolve()
+ASSETS = Path(__file__).resolve().parent / "assets"
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 
 def layout():
     st.set_page_config(
-        page_title="WIRED-AL", page_icon=f"{ROOT_PATH}/assets/favicon-96x96.png"
+        page_title="WIRED-AL", page_icon=str(ASSETS / "favicon-96x96.png")
     )
 
     with st.sidebar:
-        st.image(f"{ROOT_PATH}/assets/logo-dark.png")
+        st.image(str(ASSETS / "logo-dark.png"))
         st.markdown("AI onboarding copilot")
 
         st.divider()
