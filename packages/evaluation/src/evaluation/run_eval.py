@@ -6,7 +6,7 @@ from mlflow.genai import evaluate
 from mlflow.genai.datasets import create_dataset
 from mlflow.genai.scorers import Correctness, RetrievalRelevance, RelevanceToQuery
 
-from backend.constants import LLM_JUDGE, MLFLOW_DB_PATH, EVAL_DATA_PATH
+from backend.constants import LLM_JUDGE, MLFLOW_TRACKING_URI, EVAL_DATA_PATH
 from backend.model import chat
 
 
@@ -20,7 +20,7 @@ def bot_answer(question: str):
 
 
 def main() -> None:
-    mlflow.set_tracking_uri(MLFLOW_DB_PATH)
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
     experiment = mlflow.set_experiment(experiment_name="wired_al_evaluation")
 

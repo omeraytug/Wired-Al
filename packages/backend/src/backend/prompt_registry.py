@@ -1,6 +1,7 @@
 import mlflow
-from backend.constants import PROMPTS_PATH, MLFLOW_DB_PATH
+from backend.constants import PROMPTS_PATH, MLFLOW_TRACKING_URI
 from mlflow.genai import register_prompt
+
 
 def register_prompts(**kwargs):
     mlflow.set_experiment("wired-al-prompts")
@@ -8,10 +9,10 @@ def register_prompts(**kwargs):
         with open(filepath) as file:
             filename = filepath.stem
             prompt = file.read()
-            
-        register_prompt(name=filename,template=prompt, **kwargs)
-        
+
+        register_prompt(name=filename, template=prompt, **kwargs)
+
 
 if __name__ == "__main__":
     register_prompts()
-    print(MLFLOW_DB_PATH)
+    print(MLFLOW_TRACKING_URI)

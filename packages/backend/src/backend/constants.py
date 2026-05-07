@@ -1,5 +1,5 @@
 import mlflow
-import os 
+import os
 from pathlib import Path
 
 
@@ -10,7 +10,7 @@ ROOT_PATH = BASE_PATH.parents[0]
 PROMPTS_PATH = BASE_PATH / "backend" / "src" / "backend" / "prompts"
 MLFLOW_PATH = ROOT_PATH / "mlflow"
 
-MLFLOW_DB_PATH = os.getenv("MLFLOW_TRACKING_URI","http://localhost:5001")
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
 
 DATA_PATH = BASE_PATH / "rag" / "data"
 VECTOR_DB_PATH = BASE_PATH / "rag" / "knowledge_base"
@@ -27,4 +27,4 @@ MODEL_LARGE = "openrouter:nvidia/nemotron-3-super-120b-a12b:free"
 
 LLM_JUDGE = "openrouter:/nvidia/nemotron-3-nano-30b-a3b:free"
 
-mlflow.set_tracking_uri(MLFLOW_DB_PATH)
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)

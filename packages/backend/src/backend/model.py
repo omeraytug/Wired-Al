@@ -3,13 +3,14 @@ from mlflow.genai import load_prompt
 from dotenv import load_dotenv
 from pydantic_ai import Agent
 
-from backend.constants import MODEL_MEDIUM, MLFLOW_DB_PATH
+from backend.constants import MODEL_MEDIUM, MLFLOW_TRACKING_URI
 from backend.schemas import ChatResponse, SourceDocument
 
 from rag.retrieval import retrieve_documents
 
 load_dotenv()
-mlflow.set_tracking_uri(MLFLOW_DB_PATH)
+if MLFLOW_TRACKING_URI:
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
 system_prompt = load_prompt("prompts:/system_prompt/1").template
 rag_prompt = load_prompt("prompts:/rag_prompt/1").template

@@ -10,7 +10,10 @@ services:
     image: backend:v1
     ports:
       - "8000:8000"
-
+    depends_on:
+      - mlflow
+    environment:
+      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
   frontend:
     container_name: frontend
     build:
@@ -31,18 +34,6 @@ services:
       - "5001:5000"
     volumes:
       - ./mlflow:/mlflow # persist DB/artifacts under repo ./mlflow
-    command:
-      [
-        "mlflow",
-        "server",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "5000",
-        "--backend-store-uri",
-        "sqlite:////mlflow/mlflow.db",
-        "--allowed-hosts",
-        "*",
-      ]
-
-volumes: {}
+    environment:
+      - MLFLOW_BACKEND_STORE_URI=${MLFLOW_BACKEND_STORE_URI}
+    command: [ "sh", "-c", "pip install psycopg2-binary && mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri \"$MLFLOW_BACKEND_STORE_URI\" --default-artifact-root /mlflow/artifacts --allowed-hosts '*' --cors-allowed-origins '*'" ]
