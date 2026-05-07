@@ -1,25 +1,23 @@
 import streamlit as st 
+from backend.constants import ROOT_PATH
 import httpx
 import os 
 
 API_URL = os.getenv("API_URL","http://localhost:8000")
 
 def layout():
-    st.set_page_config(page_title="WIRED-AL", page_icon="🧠")
+    st.set_page_config(page_title="WIRED-AL", page_icon=f"{ROOT_PATH}/assets/favicon-96x96.png")
     
     with st.sidebar:
-        st.markdown("WIRED-AL")
-        st.markdown("### 404 Brain Not Found")
+        st.image(f"{ROOT_PATH}/assets/logo-dark.png")
         st.markdown("AI onboarding copilot")
 
         st.divider()
-        st.markdown("### Try asking")
+        st.markdown("### Knowledge Base")
         
+        st.info("Company documents will be available here.")
     
-        st.markdown("🧑‍💻 **How do we do code reviews?**")
-        st.markdown("⚠️ **What are common rookie mistakes?**")
-        st.markdown("🟡 **When should I ask for help?**")
-        st.markdown("💬 **How should I communicate with the team?**")
+    
     
     st.markdown("# WIRED-AL")
     
@@ -102,9 +100,8 @@ def layout():
                         {"role": "assistant", "content": assistant_message}
                 )
                 
-                except httpx.RequestError:
-                    error_message = "Colud not connect to the backend API."
-                    st.error(error_message)
+                except httpx.RequestError as e:
+                    error_message = f"Could not connect to the backend API on url: {API_URL}. Original error: {e}"
                     
                 except httpx.HTTPStatusError:
                     error_message = "The backend returned an error"

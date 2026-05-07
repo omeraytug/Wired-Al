@@ -970,12 +970,14 @@ name = "frontend"
 version = "0.1.0"
 source = { editable = "packages/frontend" }
 dependencies = [
+    { name = "backend" },
     { name = "httpx" },
     { name = "streamlit" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "backend", editable = "packages/backend" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "streamlit", specifier = ">=1.56.0" },
 ]
