@@ -100,9 +100,8 @@ def layout():
                         {"role": "assistant", "content": assistant_message}
                 )
                 
-                except httpx.RequestError:
-                    error_message = "Colud not connect to the backend API."
-                    st.error(error_message)
+                except httpx.RequestError as e:
+                    error_message = f"Could not connect to the backend API on url: {API_URL}. Original error: {e}"
                     
                 except httpx.HTTPStatusError:
                     error_message = "The backend returned an error"
