@@ -23,6 +23,15 @@ class DocumentListResponse(BaseModel):
     documents: list[str] = Field(default_factory=list)
 
 
+EscalationLevel = Literal["proceed", "ask_teammate", "escalate_supervisor"]
+
+
 class ChatResponse(BaseModel):
     answer: str
+    escalation_level: EscalationLevel = Field(
+        description="Recommended action level for the user."
+    )
+    escalation_reason: str = Field(
+        description="Short explanation for why this escalation level was chosen."
+    )
     sources: list[SourceDocument] = Field(default_factory=list)

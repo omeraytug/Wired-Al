@@ -12,8 +12,8 @@ load_dotenv()
 if MLFLOW_TRACKING_URI:
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 
-system_prompt = load_prompt("prompts:/system_prompt/1").template
-rag_prompt = load_prompt("prompts:/rag_prompt/1").template
+system_prompt = load_prompt("prompts:/system_prompt@latest").template
+rag_prompt = load_prompt("prompts:/rag_prompt@latest").template
 
 wired_al_agent = Agent(
     model=MODEL_MEDIUM, system_prompt=system_prompt, output_type=ChatResponse
@@ -34,6 +34,8 @@ async def chat(question: str) -> ChatResponse:
 
     return ChatResponse(
         answer=result.output.answer,
+        escalation_level=result.output.escalation_level,
+        escalation_reason=result.output.escalation_reason,
         sources=[
             SourceDocument(
                 document_name=doc["document_name"],
