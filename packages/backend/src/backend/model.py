@@ -69,8 +69,3 @@ async def chat(question: str) -> ChatResponse:
             for doc in documents
         ],
     )
-
-
-@wired_al_agent.tool_plain
-def search_knowledge_base(query: str):
-    return str(retrieve_documents(query))
