@@ -2,8 +2,4 @@
 name = "rag"
 version = "0.1.0"
 requires-python = ">=3.13"
-dependencies = ["backend", "pandas<3", "lancedb==0.17"]
-
-
-[tool.uv.sources]
-backend = { workspace = true }
+dependencies = ["pandas<3", "lancedb==0.17", "python-dotenv"]

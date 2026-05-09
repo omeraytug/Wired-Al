@@ -1,7 +1,7 @@
 from lancedb.pydantic import LanceModel, Vector
 from lancedb.embeddings import get_registry
 
-from backend.constants import EMBEDDING_MODEL
+from rag.constants import EMBEDDING_MODEL
 
 embedding_model = get_registry().get("cohere").create(name=EMBEDDING_MODEL)
 

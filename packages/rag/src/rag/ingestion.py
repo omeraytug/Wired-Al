@@ -1,15 +1,15 @@
 import lancedb
-from backend.constants import VECTOR_DB_PATH, DATA_PATH
-from rag.data_models import Article
 from dotenv import load_dotenv
+
+from rag.constants import VECTOR_DB_PATH, DATA_PATH, TABLE_NAME
+from rag.data_models import Article
 
 load_dotenv()
 
 
 def setup_vector_db():
     db = lancedb.connect(VECTOR_DB_PATH)
-
-    db.create_table("articles", schema=Article, exist_ok=True)
+    db.create_table(TABLE_NAME, schema=Article, exist_ok=True)
 
     return db
 
@@ -26,4 +26,4 @@ def ingest_docs(table):
 
 if __name__ == "__main__":
     db = setup_vector_db()
-    ingest_docs(db["articles"])
+    ingest_docs(db[TABLE_NAME])
