@@ -86,7 +86,7 @@ def layout():
 
                         assistant_message += "\n\n**Sources:**\n"
                         assistant_message += "\n".join(
-                            [f"-{name}" for name in source_name]
+                            [f"- {name}" for name in source_name]
                         )
 
                     st.session_state.messages.append(
