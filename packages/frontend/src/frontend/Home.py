@@ -94,11 +94,21 @@ def layout():
                     )
 
                 except httpx.RequestError as e:
-                    error_message = f"Could not connect to the backend API on url: {API_URL}. Original error: {e}"
-
-                except httpx.HTTPStatusError:
-                    error_message = "The backend returned an error"
+                    error_message = (
+                        f"Could not connect to the backend API on url: {API_URL}. "
+                        f"Original error: {e}"
+                    )
                     st.error(error_message)
+                    st.session_state.messages.append(
+                        {"role": "assistant", "content": error_message}
+                    )
+
+                except httpx.HTTPStatusError as e:
+                    error_message = f"The backend returned {e.response.status_code}: {e.response.text}"
+                    st.error(error_message)
+                    st.session_state.messages.append(
+                        {"role": "assistant", "content": error_message}
+                    )
 
 
 if __name__ == "__main__":
