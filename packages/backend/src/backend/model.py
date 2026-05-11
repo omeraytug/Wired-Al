@@ -60,6 +60,8 @@ async def chat(question: str) -> ChatResponse:
 
     return ChatResponse(
         answer=result.output.answer,
+        escalation_level=result.output.escalation_level,
+        escalation_reason=result.output.escalation_reason,
         sources=[
             SourceDocument(
                 document_name=doc["document_name"],

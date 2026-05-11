@@ -1,10 +1,20 @@
 import lancedb
-from backend.constants import VECTOR_DB_PATH, TABLE_NAME
+from rag.constants import VECTOR_DB_PATH, TABLE_NAME
 
 db = lancedb.connect(VECTOR_DB_PATH)
 
 
-def retrieve_documents(query: str, k: int = 3):
+def get_table():
+    if TABLE_NAME not in db.table_names():
+        return None
+    return db[TABLE_NAME]
+
+
+def retrieve_documents(query: str, k: int = 3) -> list[dict]:
+    table = get_table()
+    if table is None:
+        return []
+
     results = db[TABLE_NAME].search(query).limit(k).to_list()
     return [
         {
@@ -17,8 +27,11 @@ def retrieve_documents(query: str, k: int = 3):
     ]
 
 
-def get_document(document_name: str):
-    table = db[TABLE_NAME]
+def get_document(document_name: str) -> dict | None:
+    table = get_table()
+    if table is None:
+        return None
+
     df = table.to_pandas()
     match = df[df["document_name"] == document_name]
     if match.empty:
@@ -32,13 +45,18 @@ def get_document(document_name: str):
     }
 
 
-def list_document_names(*, include_extension: bool = False):
-    table = db[TABLE_NAME]
+def list_document_names(*, include_extension: bool = False) -> list[str]:
+    table = get_table()
+    if table is None:
+        return []
+
     df = table.to_pandas()
     if df.empty or "document_name" not in df.columns:
         return []
     # preserve insertion order of first occurrence while de-duping
     names = list(dict.fromkeys(df["document_name"].astype(str).tolist()))
+
     if include_extension:
         return names
+
     return [name.removesuffix(".md") for name in names]
