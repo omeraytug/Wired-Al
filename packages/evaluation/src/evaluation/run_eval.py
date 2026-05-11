@@ -26,7 +26,7 @@ def main() -> None:
 
     experiment = mlflow.set_experiment(experiment_name="wired_al_evaluation")
 
-    with open() as file:
+    with open(EVAL_DATA_PATH) as file:
         eval_data = json.load(file)
 
     evaluation_dataset = create_dataset(
