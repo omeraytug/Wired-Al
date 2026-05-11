@@ -12,6 +12,9 @@ load_dotenv()
 
 if MLFLOW_TRACKING_URI:
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    
+mlflow.set_experiment("wired_al_runtime")
+
 
 
 def load_local_prompt(filename: str) -> str:
@@ -45,7 +48,7 @@ wired_al_agent = Agent(
     model=MODEL_MEDIUM, system_prompt=system_prompt, output_type=ChatResponse
 )
 
-
+@mlflow.trace(name="chat", span_type="CHAIN")
 async def chat(question: str) -> ChatResponse:
     documents = retrieve_documents(question)
 

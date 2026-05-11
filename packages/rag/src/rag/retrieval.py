@@ -1,4 +1,5 @@
 import lancedb
+import mlflow
 from rag.constants import VECTOR_DB_PATH, TABLE_NAME
 
 db = lancedb.connect(VECTOR_DB_PATH)
@@ -15,16 +16,36 @@ def retrieve_documents(query: str, k: int = 3) -> list[dict]:
     if table is None:
         return []
 
-    results = db[TABLE_NAME].search(query).limit(k).to_list()
-    return [
-        {
-            "document_name": result["document_name"],
-            "file_path": result["file_path"],
-            "content": result["content"],
-            "distance": result["_distance"],
-        }
-        for result in results
-    ]
+    with mlflow.start_span(name="retrieve_documents", span_type="RETRIEVER") as span:
+        span.set_inputs({"query": query, "k": k})
+
+        results = table.search(query).limit(k).to_list()
+
+        documents = [
+            {
+                "document_name": result["document_name"],
+                "file_path": result["file_path"],
+                "content": result["content"],
+                "distance": result["_distance"],
+            }
+            for result in results
+        ]
+
+        span.set_outputs(
+            [
+                {
+                    "page_content": doc["content"],
+                    "metadata": {
+                        "doc_uri": doc["file_path"],
+                        "document_name": doc["document_name"],
+                        "distance": doc["distance"],
+                    },
+                    "id": doc["document_name"],
+                }
+                for doc in documents
+            ]
+        )
+        return documents
 
 
 def get_document(document_name: str) -> dict | None:

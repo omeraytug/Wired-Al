@@ -10,6 +10,7 @@ from backend.constants import LLM_JUDGE, MLFLOW_TRACKING_URI, EVAL_DATA_PATH
 from backend.model import chat
 
 
+@mlflow.trace(name="wired_al_predict", span_type="CHAIN")
 def bot_answer(question: str):
     response = asyncio.run(chat(question))
 
@@ -21,6 +22,7 @@ def bot_answer(question: str):
 
 def main() -> None:
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    mlflow.autolog(disable=True)
 
     experiment = mlflow.set_experiment(experiment_name="wired_al_evaluation")
 
