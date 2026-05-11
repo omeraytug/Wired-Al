@@ -15,12 +15,6 @@ def layout():
 
     with st.sidebar:
         st.image(str(ASSETS / "logo-dark.png"))
-        st.markdown("AI onboarding copilot")
-
-        st.divider()
-        st.markdown("### Knowledge Base")
-
-        st.info("Company documents will be available here.")
 
     st.markdown("# WIRED-AL")
 
