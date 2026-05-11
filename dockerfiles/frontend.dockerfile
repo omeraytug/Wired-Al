@@ -20,4 +20,4 @@ ENV STREAMLIT_SERVER_HEADLESS=true
 
 WORKDIR /app/packages/frontend/src/frontend
 # --no-sync: use the venv from the image; avoid network/registry on every container start
-CMD ["uv", "run", "--no-sync", "--package", "frontend", "streamlit", "run", "app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
+CMD ["uv", "run", "--no-sync", "--package", "frontend", "streamlit", "run", "Home.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
