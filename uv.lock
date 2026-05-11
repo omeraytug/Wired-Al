@@ -3339,16 +3339,16 @@ name = "rag"
 version = "0.1.0"
 source = { editable = "packages/rag" }
 dependencies = [
-    { name = "backend" },
     { name = "lancedb" },
     { name = "pandas" },
+    { name = "python-dotenv" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "backend", editable = "packages/backend" },
     { name = "lancedb", specifier = "==0.17" },
     { name = "pandas", specifier = "<3" },
+    { name = "python-dotenv" },
 ]
 
 [[package]]
