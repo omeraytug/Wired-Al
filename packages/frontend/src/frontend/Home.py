@@ -16,11 +16,13 @@ ESCALATION_LABELS = {
 
 def layout():
     st.set_page_config(
-        page_title="WIRED-AL", page_icon=str(ASSETS / "favicon-96x96.png")
+        page_title="Wired-Al", page_icon=str(ASSETS / "favicon-96x96.png")
     )
 
     with st.sidebar:
-        st.image(str(ASSETS / "logo-dark.png"))
+        logo_path = ASSETS / "logo-dark.png"
+        if logo_path.exists():
+            st.image(str(logo_path))
 
     st.markdown("# Wired-Al")
 
@@ -31,28 +33,36 @@ def layout():
                 "content": "Hi! I am your onboarding copilot. Ask me anything about onboarding.",
             }
         ]
-
-
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-            
     suggested_questions = [
         "How do code reviews work here?",
         "Why did we choose FastAPI?",
-        "When should an incident be escalated?"]
-    
+        "When should an incident be escalated?",
+    ]
+
     cols = st.columns(2)
-    
+
     for index, question in enumerate(suggested_questions):
         with cols[index % 2]:
             if st.button(question, use_container_width=True):
                 st.session_state.pending_question = question
+                st.rerun()
+
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+            if message["role"] == "assistant":
+                render_escalation(
+                    message.get("escalation_level"), message.get("escalation_reason")
+                )
+                render_sources(message.get("sources", []))
+
+    typed_question = st.chat_input("Ask a question")
 
     user_question = st.session_state.pop("pending_question", None)
 
     if user_question is None:
-        user_question = st.chat_input("Ask a question")
+        user_question = typed_question
 
     if user_question:
         st.session_state.messages.append({"role": "user", "content": user_question})
@@ -66,7 +76,7 @@ def layout():
                     response = httpx.post(
                         f"{API_URL}/ask",
                         json={"question": user_question},
-                        timeout=120,
+                        timeout=60,
                     )
                     response.raise_for_status()
                     data = response.json()
@@ -81,16 +91,17 @@ def layout():
                     render_escalation(escalation_level, escalation_reason)
                     render_sources(sources)
 
-                    assistant_message = build_assistant_message(
-                        answer=answer,
-                        escalation_level=escalation_level,
-                        escalation_reason=escalation_reason,
-                    )
+                    assistant_message = answer
 
                     st.session_state.messages.append(
-                        {"role": "assistant", "content": assistant_message}
+                        {
+                            "role": "assistant",
+                            "content": assistant_message,
+                            "sources": sources,
+                            "escalation_level": escalation_level,
+                            "escalation_reason": escalation_reason,
+                        }
                     )
-
 
                 except httpx.RequestError as e:
                     error_message = (
@@ -108,8 +119,8 @@ def layout():
                     st.session_state.messages.append(
                         {"role": "assistant", "content": error_message}
                     )
-                    
-                    
+
+
 def render_escalation(
     escalation_level: str | None,
     escalation_reason: str | None,
@@ -161,24 +172,9 @@ def render_sources(sources: list[dict]) -> None:
             st.divider()
 
 
-def build_assistant_message(
-    answer: str,
-    escalation_level: str | None,
-    escalation_reason: str | None,
-) -> str:
-    assistant_message = answer
-
-    if escalation_level:
-        label = ESCALATION_LABELS.get(escalation_level, escalation_level)
-        assistant_message += f"\n\n**Escalation:** {label}"
-
-    if escalation_reason:
-        assistant_message += f"\n\n{escalation_reason}"
-
-    return assistant_message
-
 def format_document_name(document_name: str) -> str:
     return document_name.removesuffix(".md").replace("_", " ").replace("-", " ").title()
+
 
 if __name__ == "__main__":
     layout()
