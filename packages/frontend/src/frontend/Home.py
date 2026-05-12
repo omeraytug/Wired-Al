@@ -34,6 +34,7 @@ def layout():
             }
         ]
     suggested_questions = [
+        "What should I do first?",
         "How do code reviews work here?",
         "Why did we choose FastAPI?",
         "When should an incident be escalated?",
