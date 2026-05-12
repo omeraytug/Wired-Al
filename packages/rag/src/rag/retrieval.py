@@ -11,7 +11,7 @@ def get_table():
     return db[TABLE_NAME]
 
 
-def retrieve_documents(query: str, k: int = 3) -> list[dict]:
+def retrieve_documents(query: str, k: int = 2) -> list[dict]:
     table = get_table()
     if table is None:
         return []
