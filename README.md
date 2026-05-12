@@ -1,6 +1,24 @@
-# Wired Al
 
-**Wired Al** is an AI onboarding copilot for interns and junior engineers.  
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.13-blue" alt="Python">
+  <img src="https://img.shields.io/badge/FastAPI-API-brightgreen" alt="FastAPI">
+  <img src="https://img.shields.io/badge/Streamlit-Frontend-red" alt="Streamlit">
+  <img src="https://img.shields.io/badge/MLflow-LLMOps-orange" alt="MLflow">
+  <img src="https://img.shields.io/badge/RAG-Enabled-purple" alt="RAG">
+  <img src="https://img.shields.io/badge/Docker-Ready-blue" alt="Docker">
+  <img src="https://img.shields.io/badge/Azure-Deployed-blue" alt="Azure">
+</p>
+
+
+
+<div align="center">
+<img src="design/wiredal-screen.png", width="800">
+</div>
+
+---
+
+
+Wired Al is an AI onboarding copilot for interns and junior engineers.  
 It combines Retrieval-Augmented Generation (RAG), mentor-style guidance, escalation support, and LLMOps practices to help new developers become productive faster in a fictional engineering organization: **404 Brain Not Found**.
 
 ## Overview
@@ -41,6 +59,10 @@ The assistant retrieves relevant information from a curated internal knowledge b
 
 ### Escalation Guidance
 
+<div align="center">
+<img src="design/escalation-screen.png", width="400">
+</div>
+
 Wired Al can classify a situation into one of three escalation levels:
 
 ```text
@@ -59,6 +81,10 @@ The project uses MLflow for:
 * prompt versioning
 * LLM-based evaluation
 * tracing/evaluation of the chat pipeline
+
+<div align="center">
+<img src="design/eval-screen.png", width="400">
+</div>
 
 Evaluation cases are stored as structured test data and are used to check factual correctness, query relevance, and retrieval relevance.
 
@@ -282,3 +308,15 @@ Wired Al was built as an LLMOps project to demonstrate how modern AI application
 
 The project is intentionally built around a fictional startup so the knowledge base, culture, policies, and onboarding material can be realistic while remaining controlled for demonstration purposes.
 
+
+## Contributors
+
+<a href="https://github.com/hazajijan-prog">
+<img src="https://avatars.githubusercontent.com/hazajijan-prog" width="50" height="50" style="border-radius: 30%;" alt="Haza">
+</a>
+<a href="https://github.com/omeraytug">
+<img src="https://avatars.githubusercontent.com/omeraytug" width="50" height="50" style="border-radius: 30%;" alt="Ömer">
+</a>
+<a href="https://github.com/pytt156">
+<img src="https://avatars.githubusercontent.com/pytt156" width="50" height="50" style="border-radius: 30%;" alt="Daniela">
+</a>
