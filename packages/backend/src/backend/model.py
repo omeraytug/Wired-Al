@@ -3,7 +3,7 @@ from mlflow.genai import load_prompt
 from dotenv import load_dotenv
 from pydantic_ai import Agent
 
-from backend.constants import MODEL_MEDIUM, MLFLOW_TRACKING_URI, PROMPTS_PATH
+from backend.constants import OPENAI_MODEL, MLFLOW_TRACKING_URI, PROMPTS_PATH
 from backend.schemas import ChatResponse, SourceDocument
 
 from rag.retrieval import retrieve_documents
@@ -12,9 +12,8 @@ load_dotenv()
 
 if MLFLOW_TRACKING_URI:
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-    
-mlflow.set_experiment("wired_al_runtime")
 
+mlflow.set_experiment("wired_al_runtime")
 
 
 def load_local_prompt(filename: str) -> str:
@@ -45,8 +44,9 @@ def load_prompts() -> tuple[str, str]:
 system_prompt, rag_prompt = load_prompts()
 
 wired_al_agent = Agent(
-    model=MODEL_MEDIUM, system_prompt=system_prompt, output_type=ChatResponse
+    model=OPENAI_MODEL, system_prompt=system_prompt, output_type=ChatResponse
 )
+
 
 @mlflow.trace(name="chat", span_type="CHAIN")
 async def chat(question: str) -> ChatResponse:
