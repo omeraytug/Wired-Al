@@ -1,8 +1,54 @@
+# Local stack: Postgres → MLflow → backend. Named volume keeps DB across restarts (avoid `docker compose down -v`).
+# Override POSTGRES_* in .env if you change user/password/db. Use a URL-safe password or encode it in MLFLOW_BACKEND_STORE_URI.
+
 services:
+  postgres:
+    container_name: postgres
+    build:
+      context: .
+      dockerfile: dockerfiles/postgres.dockerfile
+    image: wiredal-postgres:local
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-mlflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mlflow}
+      POSTGRES_DB: ${POSTGRES_DB:-mlflow}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mlflow:
+    container_name: mlflow
+    image: ghcr.io/mlflow/mlflow:latest
+    ports:
+      - "5001:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./mlflow:/mlflow
+    environment:
+      MLFLOW_BACKEND_STORE_URI: postgresql+psycopg2://${POSTGRES_USER:-mlflow}:${POSTGRES_PASSWORD:-mlflow}@postgres:5432/${POSTGRES_DB:-mlflow}
+    command:
+      [
+        "sh",
+        "-c",
+        "pip install --no-cache-dir psycopg2-binary && mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri \"$$MLFLOW_BACKEND_STORE_URI\" --default-artifact-root /mlflow/artifacts --allowed-hosts '*' --cors-allowed-origins '*'",
+      ]
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/', timeout=2)\"",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 120s
+
   backend:
     container_name: backend
     build:
-      # . means we are in same folder as docker-compose.yaml file i.e. rag folder
       context: .
       dockerfile: dockerfiles/backend.dockerfile
     env_file:
@@ -11,9 +57,13 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mlflow
+      mlflow:
+        condition: service_healthy
     environment:
-      - MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI}
+      # In Docker, MLflow is reached by service name + container port (not localhost from .env).
+      # Override with MLFLOW_TRACKING_URI_DOCKER in .env if your setup differs; omit for default.
+      MLFLOW_TRACKING_URI: ${MLFLOW_TRACKING_URI_DOCKER:-http://mlflow:5000}
+
   frontend:
     container_name: frontend
     build:
@@ -27,13 +77,5 @@ services:
     environment:
       - API_URL=http://backend:8000
 
-  mlflow:
-    container_name: mlflow
-    image: ghcr.io/mlflow/mlflow:latest
-    ports:
-      - "5001:5000"
-    volumes:
-      - ./mlflow:/mlflow # persist DB/artifacts under repo ./mlflow
-    environment:
-      - MLFLOW_BACKEND_STORE_URI=${MLFLOW_BACKEND_STORE_URI}
-    command: [ "sh", "-c", "pip install psycopg2-binary && mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri \"$MLFLOW_BACKEND_STORE_URI\" --default-artifact-root /mlflow/artifacts --allowed-hosts '*' --cors-allowed-origins '*'" ]
+volumes:
+  postgres_data:
