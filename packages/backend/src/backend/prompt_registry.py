@@ -1,7 +1,9 @@
+from dotenv import load_dotenv
 import mlflow
 from backend.constants import PROMPTS_PATH, MLFLOW_TRACKING_URI
 from mlflow.genai import register_prompt
 
+load_dotenv()
 
 def register_prompts(**kwargs):
     mlflow.set_experiment("wired-al-prompts")
